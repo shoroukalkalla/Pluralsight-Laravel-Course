@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,26 +16,19 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [HomeController::class, 'home'])->name('home');
 
-Route::get('/about_us', function () {
-    return view('about');
-})->name('about');
+Route::get('/about_us', [HomeController::class, 'about'])->name('about');
 
-Route::get('/posts.create', function () {
-    return view('create');
-})->name('posts.create');
+Route::resource('posts', PostController::class)->except(['index']);
 
-Route::post('/posts', function(Request $request) {
-    $request->validate([
-        'title' => 'required',
-        'description' => 'required|min:10'
-    ]);
-    return redirect()
-            ->route('posts.create')
-            ->with('success', 'Post created successfully!!'); /*Title: ' .*/
-//            $request->input('title') . 'Description: ' .
-//            $request->input('description'));
-})->name('posts.store');
+//Route::name('posts.')->prefix('posts')->group(function () {
+//    Route::get('/create', function () {
+//    })->name('create');
+//
+//    Route::post('/', function(Request $request) {
+//
+//    })->name('store');
+//
+//});
+
