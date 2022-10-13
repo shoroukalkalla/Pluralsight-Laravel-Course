@@ -29,7 +29,7 @@ class PostController extends Controller
     {
         $validated = $request->validated();
 
-        Post::create($validated);
+        $request->user()->posts()->create($validated);
 
         //$post = new Post();
         //$post->title = $request->input('title');
@@ -63,6 +63,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('update', Post::findOrFail($id));
         return view('posts.edit', ['post' => Post::findOrFail($id)]);
     }
 
@@ -75,6 +76,8 @@ class PostController extends Controller
      */
     public function update(PostFormRequest $request, $id)
     {
+        $this->authorize('update', Post::findOrFail($id));
+
         $validated = $request->validated();
 
         $post = Post::findOrFail($id);
@@ -98,6 +101,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $this->authorize('delete', $post);
+
         $post->delete();
 
         return redirect()
