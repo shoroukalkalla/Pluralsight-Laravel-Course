@@ -31,10 +31,10 @@ class PostController extends Controller
 
         Post::create($validated);
 
-//        $post = new Post();
-//        $post->title = $request->input('title');
-//        $post->description = $request->input('description');
-//        $post->save();
+        //$post = new Post();
+        //$post->title = $request->input('title');
+        //$post->description = $request->input('description');
+        //$post->save();
 
         return redirect()
             ->route('posts.create')
@@ -75,12 +75,15 @@ class PostController extends Controller
      */
     public function update(PostFormRequest $request, $id)
     {
-        $request->validated();
+        $validated = $request->validated();
 
         $post = Post::findOrFail($id);
-        $post->title = $request->input('title');
-        $post->description = $request->input('description');
-        $post->save();
+
+        $post->update($validated);
+
+        //$post->title = $request->input('title');
+        //$post->description = $request->input('description');
+        //$post->save();
 
         return redirect()
             ->route('posts.show', ['post'=>$post->id])
